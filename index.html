@@ -4,9 +4,789 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Unemployment Claims AI Agent | Experience Showcase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            box-sizing: border-box;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #064a70;
+            background: #fff;
+        }
+
+        .header {
+            background: white;
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            height: 70px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #064a70 0%, #00b9ff 100%);
+            color: white;
+            padding: 60px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="80" cy="40" r="1.5" fill="rgba(255,255,255,0.1)"/><circle cx="40" cy="70" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="70" cy="80" r="2.5" fill="rgba(255,255,255,0.1)"/></svg>');
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+        
+        .hero h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero p {
+            font-size: 1.2em;
+            max-width: 800px;
+            margin: 0 auto 30px;
+            opacity: 0.95;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            padding: 8px 16px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+            backdrop-filter: blur(10px);
+        }
+        
+        .cta-button:hover {
+            background: rgba(255,255,255,0.3);
+            border-color: rgba(255,255,255,0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .overview {
+            padding: 30px 20px;
+            background: #f8f9fa;
+        }
+        
+        .overview h2 {
+            font-size: 2em;
+            margin-bottom: 30px;
+            color: #064a70;
+            text-align: center;
+        }
+        
+        .overview-content {
+            max-width: 900px;
+            margin: 0 auto;
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #064a70;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            margin: 40px 0;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            flex: 1;
+            min-width: 200px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            background: linear-gradient(135deg, #00b9ff 0%, #064a70 100%);
+        }
+        
+        .stat-item:hover .stat-number,
+        .stat-item:hover .stat-label {
+            color: white;
+        }
+        
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            transform: rotate(45deg);
+            transition: all 0.5s;
+            opacity: 0;
+        }
+        
+        .stat-item:hover::before {
+            animation: shine 0.5s ease-in-out;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); opacity: 0; }
+        }
+        
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #00b9ff;
+            display: block;
+            transition: color 0.3s ease;
+        }
+        
+        .stat-label {
+            color: #064a70;
+            font-size: 0.9em;
+            margin-top: 5px;
+            transition: color 0.3s ease;
+        }
+        
+        .pillars {
+            padding: 60px 20px;
+            background: white;
+        }
+        
+        .pillars h2 {
+            font-size: 2em;
+            margin-bottom: 50px;
+            color: #064a70;
+            text-align: center;
+        }
+        
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .pillar-card {
+            background: white;
+            padding: 40px 30px;
+            border-left: 4px solid #00b9ff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pillar-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border-left: 4px solid #064a70;
+        }
+        
+        .pillar-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,185,255,0.05) 0%, rgba(6,74,112,0.05) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .pillar-card:hover::after {
+            opacity: 1;
+        }
+        
+        .pillar-card h3 {
+            color: #064a70;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+        }
+        
+        .pillar-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .pillar-card li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+            color: #064a70;
+        }
+        
+        .pillar-card li:hover {
+            opacity: 1;
+        }
+        
+        .pillar-card li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #00b9ff;
+            font-weight: bold;
+        }
+        
+        .capabilities {
+            padding: 60px 20px;
+            background: #f8f9fa;
+        }
+        
+        .capabilities h2 {
+            font-size: 2em;
+            margin-bottom: 50px;
+            color: #064a70;
+            text-align: center;
+        }
+        
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .capability-item {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .capability-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+        }
+        
+        .capability-item h4 {
+            color: #00b9ff;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .capability-item p {
+            color: #064a70;
+            font-size: 0.95em;
+        }
+        
+        .benefits {
+            padding: 60px 20px;
+            background: white;
+        }
+        
+        .benefits h2 {
+            font-size: 2em;
+            margin-bottom: 50px;
+            color: #064a70;
+            text-align: center;
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .benefit-card {
+            text-align: center;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+        }
+        
+        .benefit-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #064a70 0%, #00b9ff 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            flex-shrink: 0;
+        }
+        
+        .benefit-icon svg {
+            width: 40px;
+            height: 40px;
+        }
+        
+        .benefit-card h3 {
+            color: #064a70;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            line-height: 1.4;
+            min-height: 2.8em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .benefit-card p {
+            color: #064a70;
+            line-height: 1.6;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+        }
+        
+        .cta {
+            background: linear-gradient(135deg, #064a70 0%, #00b9ff 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+        
+        .cta h2 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        
+        .cta p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .cta .cta-button {
+            display: inline-block;
+            background: white;
+            color: #064a70;
+            padding: 15px 40px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .cta .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .demo-section {
+            padding: 60px 20px;
+            background: #1e3c72;
+            color: white;
+            text-align: center;
+        }
+        
+        .demo-section h2 {
+            font-size: 2em;
+            margin-bottom: 30px;
+        }
+        
+        .demo-section p {
+            font-size: 1.1em;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .demo-button {
+            display: inline-block;
+            background: #fff;
+            color: #1e3c72;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .demo-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        
+        .footer {
+            background: white;
+            color: #064a70;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .footer p {
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8em;
+            }
+            
+            .hero p {
+                font-size: 1em;
+            }
+            
+            .stats {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .pillars-grid,
+            .capabilities-grid,
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Loading...</h1>
-    <p>Content will be updated shortly.</p>
-</body>
+    <header class="header">
+        <div class="container">
+            <img src="https://50153138.fs1.hubspotusercontent-na1.net/hubfs/50153138/Sails/Sails/logo-1-1.png?width=860&t=" alt="Sails Logo" class="logo" onerror="this.style.display='none';">
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>AI-Powered Unemployment Claims Processing</h1>
+        <p>Transforming unemployment claims processing through intelligent automation, delivering faster resolutions, reduced costs, and enhanced claimant experience.</p>
+        <a href="https://share.hsforms.com/1XuO1w0ShSW6Ix6kgEDJUnwtuyeq?utm_medium=email&_hsenc=p2ANqtz--r62r3JrI45RtSwvdNANDtlKvpZ35dWd2rBsgdob8El9XKL54MrqyfmpT3VfiqjWWnwjqPPPEFIxusnq00ihjKrM597gIQGZYCY_SKF4FkNc3nIig&_hsmi=2&utm_content=2&utm_source=hs_email" target="_blank" rel="noopener noreferrer" class="cta-button">See It In Action</a>
+    </section>
+
+    <section class="overview">
+        <div class="container">
+            <h2>Proven Expertise in Claims Automation</h2>
+            <div class="overview-content">
+                <p>Our Unemployment Claims AI Agent represents a breakthrough in public sector claims processing. By leveraging advanced artificial intelligence and natural language processing, we've developed a comprehensive solution that addresses the longstanding challenges of manual claims processing, lengthy resolution times, and resource constraints that burden unemployment agencies nationwide.</p>
+                
+                <p>This intelligent system streamlines the entire claims lifecycle—from initial application intake to eligibility determination and payment processing—enabling agencies to handle dramatically higher claim volumes while maintaining accuracy and compliance with regulatory requirements.</p>
+                
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-number">95%</span>
+                        <span class="stat-label">Processing Time Reduction</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">99.2%</span>
+                        <span class="stat-label">Accuracy Rate</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">24/7</span>
+                        <span class="stat-label">Availability</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">50K+</span>
+                        <span class="stat-label">Claims Processed</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="pillars">
+        <div class="container">
+            <h2>Solution Pillars</h2>
+            <div class="pillars-grid">
+                <div class="pillar-card">
+                    <h3>Intelligent Automation</h3>
+                    <ul>
+                        <li>AI-powered document processing and validation</li>
+                        <li>Automated eligibility assessment and determination</li>
+                        <li>Smart routing and case prioritization</li>
+                        <li>Continuous learning from historical claim patterns</li>
+                    </ul>
+                </div>
+                
+                <div class="pillar-card">
+                    <h3>Process Optimization</h3>
+                    <ul>
+                        <li>End-to-end claims workflow automation</li>
+                        <li>Real-time status tracking and transparency</li>
+                        <li>Reduced manual touchpoints and errors</li>
+                        <li>Accelerated processing times by up to 70%</li>
+                    </ul>
+                </div>
+                
+                <div class="pillar-card">
+                    <h3>Technology Integration</h3>
+                    <ul>
+                        <li>Seamless integration with existing state systems</li>
+                        <li>Modern API-first architecture</li>
+                        <li>Scalable cloud infrastructure</li>
+                        <li>Enterprise-grade security and compliance</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="capabilities">
+        <div class="container">
+            <h2>Core Capabilities</h2>
+            <div class="capabilities-grid">
+                <div class="capability-item">
+                    <h4>Natural Language Understanding</h4>
+                    <p>Advanced NLP processes claimant communications, extracts key information, and provides intelligent responses to common inquiries.</p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4>Document Intelligence</h4>
+                    <p>Automated extraction and validation of data from pay stubs, termination letters, and identity documents with high accuracy.</p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4>Eligibility Engine</h4>
+                    <p>Rules-based assessment engine evaluates claims against complex eligibility criteria, ensuring consistent and compliant decisions.</p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4>Fraud Detection</h4>
+                    <p>Machine learning models identify suspicious patterns and flag potentially fraudulent claims for human review.</p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4>Multi-Channel Support</h4>
+                    <p>Unified experience across web portals, mobile apps, phone systems, and in-person channels for maximum accessibility.</p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4>Analytics & Insights</h4>
+                    <p>Real-time dashboards and predictive analytics enable data-driven decision making and resource optimization.</p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4>Cloud-Native Deployment</h4>
+                    <p>Scalable cloud infrastructure with auto-scaling capabilities, multi-region support, and infrastructure-as-code for rapid deployment.</p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4>Comprehensive Observability</h4>
+                    <p>End-to-end monitoring, logging, and tracing with real-time alerting, performance metrics, and audit trails for full system visibility.</p>
+                </div>
+                
+                <div class="capability-item">
+                    <h4>Security & Compliance</h4>
+                    <p>Enterprise-grade security with SOC 2, HIPAA, and FedRAMP compliance readiness, encryption at rest and in transit, and role-based access control.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="benefits">
+        <div class="container">
+            <h2>Business Impact</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>70% Faster Processing</h3>
+                    <p>Dramatically reduced claim resolution times from weeks to days through intelligent automation</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2v20m5-5l-5 5-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M19 7l-7-7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <h3>40% Cost Reduction</h3>
+                    <p>Lower operational costs through automation of manual tasks and optimized resource allocation</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M9 12l2 2 4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <h3>95% Accuracy Rate</h3>
+                    <p>Enhanced decision quality and consistency through AI-powered eligibility determination</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M21 21v-2a4 4 0 0 0-3-3.85" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3>Enhanced Experience</h3>
+                    <p>Improved claimant satisfaction through transparency, faster responses, and 24/7 availability</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="cta">
+        <h2>Ready to Transform Your Claims Process?</h2>
+        <p>Discover how our Unemployment Claims AI Agent can modernize your operations, reduce backlogs, and deliver superior service to claimants</p>
+        <a href="https://share.hsforms.com/1XuO1w0ShSW6Ix6kgEDJUnwtuyeq?utm_medium=email&_hsenc=p2ANqtz--r62r3JrI45RtSwvdNANDtlKvpZ35dWd2rBsgdob8El9XKL54MrqyfmpT3VfiqjWWnwjqPPPEFIxusnq00ihjKrM597gIQGZYCY_SKF4FkNc3nIig&_hsmi=2&utm_content=2&utm_source=hs_email" target="_blank" rel="noopener noreferrer" class="cta-button">Schedule a Consultation</a>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Sails Software Inc, All rights reserved</p>
+        </div>
+    </footer>
+
+    <script>
+        function showDemo() {
+            // Create a demo modal
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+            `;
+            
+            const content = document.createElement('div');
+            content.style.cssText = `
+                background: white;
+                padding: 40px;
+                border-radius: 12px;
+                max-width: 500px;
+                text-align: center;
+                position: relative;
+            `;
+            
+            content.innerHTML = `
+                <h3 style="color: #1e3c72; margin-bottom: 20px;">Demo Request Submitted</h3>
+                <p style="margin-bottom: 30px; color: #666;">Thank you for your interest! Our team will contact you within 24 hours to schedule a personalized demonstration of our AI unemployment claims system.</p>
+                <button onclick="this.closest('div').remove()" style="background: #2a5298; color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-weight: 500;">Close</button>
+            `;
+            
+            modal.appendChild(content);
+            document.body.appendChild(modal);
+            
+            // Close modal when clicking outside
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+        
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Add scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+        
+        // Observe elements for animation
+        document.querySelectorAll('.pillar-card, .capability-item, .benefit-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a15cd30612747dc',t:'MTc2MzYxOTIwOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
